@@ -7,8 +7,14 @@ dependencies {
     implementation project(":support:logging")
     implementation project(":storage:db-core")
     implementation project(":clients:client-example")
+    implementation project(":application")
 
     testImplementation project(":tests:api-docs")
     
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
