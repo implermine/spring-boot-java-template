@@ -1,5 +1,6 @@
 package io.dodn.springboot.application.core.domain.account;
 
+import io.dodn.springboot.application.core.port.CompareAccountUseCase;
 import io.dodn.springboot.application.core.port.SendMoneyUseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -11,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
-public class AccountService implements SendMoneyUseCase { // Port를 늘릴것.
+public class AccountService implements
+        SendMoneyUseCase,
+        CompareAccountUseCase { // Port를 늘릴것.
 
     private final LoadAccountPort loadAccountPort;
     private final UpdateAccountPort updateAccountPort;
@@ -19,7 +22,7 @@ public class AccountService implements SendMoneyUseCase { // Port를 늘릴것.
 
     @Override
     @Transactional // needed
-    public Result sendMoney(Command command) {
+    public SendMoneyUseCase.Result sendMoney(SendMoneyUseCase.Command command) {
         Account fromAccount = loadAccountPort.loadAccount(command.getFromAccountId())
                 .orElseThrow(() -> new IllegalStateException("not exist account"));
         Account toAccount =loadAccountPort.loadAccount(command.getToAccountId())
@@ -31,6 +34,11 @@ public class AccountService implements SendMoneyUseCase { // Port를 늘릴것.
         updateAccountPort.updateAccount(fromAccount);
         updateAccountPort.updateAccount(toAccount);
 
-        return new Result(true);
+        return new SendMoneyUseCase.Result(true);
+    }
+
+    public CompareAccountUseCase.Result getCompareAccount(CompareAccountUseCase.Command command){
+        //do something
+        return null;
     }
 }
